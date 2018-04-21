@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.sipox11.recipe_testing.R;
 import com.sipox11.recipe_testing.data.local.RecipeStore;
+import com.sipox11.recipe_testing.data.local.SharedPreferencesFavorites;
 import com.sipox11.recipe_testing.data.model.Recipe;
 
 public class RecipeActivity extends AppCompatActivity {
@@ -22,7 +23,7 @@ public class RecipeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_recipe);
 
         // Get ui elements
-        TextView titleView = findViewById(R.id.title);
+        final TextView titleView = findViewById(R.id.title);
         TextView descriptionView = findViewById(R.id.description);
 
         // Create a store
@@ -33,7 +34,7 @@ public class RecipeActivity extends AppCompatActivity {
         String id = getIntent().getStringExtra(KEY_ID);
 
         // Retrieve recipe
-        Recipe recipe = store.getRecipe(id);
+        final Recipe recipe = store.getRecipe(id);
 
         // Handle null recipes
         if(recipe == null) {
@@ -42,8 +43,20 @@ public class RecipeActivity extends AppCompatActivity {
             return;
         }
 
+        // Create Shared Preferences Favorite
+        final SharedPreferencesFavorites favorites = new SharedPreferencesFavorites(mContext);
+        boolean favorite = favorites.get(recipe.id);
+
         // Handle non-null recipes
         titleView.setText(recipe.title);
+        titleView.setSelected(favorite);
+        titleView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean result = favorites.toggle(recipe.id);
+                titleView.setSelected(result);
+            }
+        });
         descriptionView.setText(recipe.description);
     }
 }
