@@ -12,8 +12,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import java.util.HashMap;
-
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
@@ -22,10 +20,10 @@ import static android.support.test.espresso.matcher.ViewMatchers.isSelected;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.CoreMatchers.not;
-import static org.junit.Assert.*;
 
 public class RecipeActivityTest {
 
+    private static final String CARROTS_ID = "creamed_carrots";
     @Rule
     public ActivityTestRule<RecipeActivity> activityRule =
             new ActivityTestRule<>(RecipeActivity.class, true, false);
@@ -51,9 +49,7 @@ public class RecipeActivityTest {
 
     @Test
     public void clickToFavorite() {
-        Intent intent = new Intent();
-        intent.putExtra(RecipeActivity.KEY_ID, "creamed_carrots");
-        activityRule.launchActivity(intent);
+        launchRecipe(CARROTS_ID);
         // Verify that the title textview displays the correct text,
         // that it is not selected initially
         // and that when clicked, it changes to selected
@@ -64,6 +60,20 @@ public class RecipeActivityTest {
                 .check(matches(isSelected()));
     }
 
+    @Test
+    public void alreadyFavorite() {
+        favorites.put(CARROTS_ID, true);
+        launchRecipe(CARROTS_ID);
 
+        // Verify that carrots recipe is selected on startup by default
+        onView(withId(R.id.title))
+                .check(matches(isSelected()));
 
+    }
+
+    private void launchRecipe(String id) {
+        Intent intent = new Intent();
+        intent.putExtra(RecipeActivity.KEY_ID, id);
+        activityRule.launchActivity(intent);
+    }
 }
