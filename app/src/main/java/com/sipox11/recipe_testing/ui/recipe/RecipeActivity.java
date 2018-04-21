@@ -8,9 +8,11 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.sipox11.recipe_testing.R;
+import com.sipox11.recipe_testing.data.local.Favorites;
 import com.sipox11.recipe_testing.data.local.RecipeStore;
 import com.sipox11.recipe_testing.data.local.SharedPreferencesFavorites;
 import com.sipox11.recipe_testing.data.model.Recipe;
+import com.sipox11.recipe_testing.injection.RecipeApplication;
 
 public class RecipeActivity extends AppCompatActivity {
 
@@ -42,8 +44,9 @@ public class RecipeActivity extends AppCompatActivity {
             return;
         }
 
-        // Create Shared Preferences Favorite
-        final SharedPreferencesFavorites favorites = new SharedPreferencesFavorites(mContext);
+        // Inject Shared Preferences Favorites dependency from application
+        RecipeApplication app = (RecipeApplication) getApplication();
+        final Favorites favorites = app.getFavorites();
         boolean favorite = favorites.get(recipe.id);
 
         // Handle non-null recipes
