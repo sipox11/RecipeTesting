@@ -1,12 +1,18 @@
 package com.sipox11.recipe_testing.ui.recipe;
 
 import android.content.Intent;
+import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 
 import com.sipox11.recipe_testing.R;
+import com.sipox11.recipe_testing.data.local.InMemoryFavorites;
+import com.sipox11.recipe_testing.injection.TestRecipeApplication;
 
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+
+import java.util.HashMap;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -23,6 +29,16 @@ public class RecipeActivityTest {
     @Rule
     public ActivityTestRule<RecipeActivity> activityRule =
             new ActivityTestRule<>(RecipeActivity.class, true, false);
+
+    private InMemoryFavorites favorites;
+
+    @Before
+    public void clearFavorites() {
+        TestRecipeApplication app = (TestRecipeApplication)
+                InstrumentationRegistry.getTargetContext().getApplicationContext();
+        favorites = (InMemoryFavorites) app.getFavorites();
+        favorites.clear();
+    }
 
     @Test
     public void recipeNotFound() {
@@ -46,8 +62,8 @@ public class RecipeActivityTest {
                 .check(matches(not(isSelected())))
                 .perform(click())
                 .check(matches(isSelected()));
-
     }
+
 
 
 }
