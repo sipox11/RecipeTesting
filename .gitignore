@@ -3,3 +3,12 @@
 .idea
 .idea/workspace.xml
 .DS_Store
+.gradle/*
+.gradle/
+.gradle
+app.iml
+build/*
+build/
+/build/*
+/build
+.gradle/4.4/fileHashes/*
