@@ -44,7 +44,7 @@ public class Recipe {
         } catch (IOException ioe) {
             return null;
         }
-        
+
         return new Recipe(id, title, descBuilder.toString());
     }
 }
