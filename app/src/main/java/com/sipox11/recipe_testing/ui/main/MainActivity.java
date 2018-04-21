@@ -1,4 +1,4 @@
-package com.sqisland.tutorial.recipes.ui.main;
+package com.sipox11.recipe_testing.ui.main;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
