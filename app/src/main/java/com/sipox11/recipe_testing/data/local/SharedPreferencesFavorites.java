@@ -3,7 +3,7 @@ package com.sipox11.recipe_testing.data.local;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-public class SharedPreferencesFavorites {
+public class SharedPreferencesFavorites implements Favorites {
 
     private final SharedPreferences pref;
 
