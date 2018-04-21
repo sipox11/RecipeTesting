@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mContext = this;
-        
+
         RecyclerView recyclerView = findViewById(R.id.recipes);
         RecipeStore store = new RecipeStore(mContext, "recipes");
         RecipeAdapter adapter = new RecipeAdapter(store);
