@@ -27,7 +27,7 @@ public class RecipeActivity extends AppCompatActivity implements RecipeContract.
         titleView = findViewById(R.id.title);
         descriptionView = findViewById(R.id.description);
 
-        
+
         Context mContext = this;
         RecipeStore store = new RecipeStore(mContext, "recipes");
         String id = getIntent().getStringExtra(KEY_ID);
