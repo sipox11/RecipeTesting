@@ -2,10 +2,15 @@ package com.sipox11.recipe_testing.ui.recipe;
 
 import com.sipox11.recipe_testing.data.local.Favorites;
 import com.sipox11.recipe_testing.data.local.RecipeStore;
+import com.sipox11.recipe_testing.data.model.Recipe;
+import com.sipox11.recipe_testing.data.model.RecipeTest;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
+
+import java.io.InputStream;
 
 import static org.junit.Assert.*;
 
@@ -36,6 +41,30 @@ public class RecipePresenterTest {
         Mockito.verify(view, Mockito.times(1)).showRecipeNotFoundError();
     }
 
+    @Test(expected = IllegalStateException.class)
+    public void toggleWithoutLoad() {
+        presenter.toggleFavorite();
+    }
 
+    @Test
+    public void loadWaterAndFavorite() {
+        // 1) Arrange
+        InputStream stream = RecipePresenterTest.class.getResourceAsStream("/recipes/water.txt");
+        Recipe recipe = Recipe.readFromStream(stream);
+        Mockito.when(store.getRecipe(Mockito.anyString())).thenReturn(recipe);
+        Mockito.when(favorites.toggle(Mockito.anyString())).thenReturn(true);
+
+        // 2) Act
+        presenter.loadRecipe("water");
+        presenter.toggleFavorite();
+
+        // 3) Assert
+        ArgumentCaptor<Boolean> captor = ArgumentCaptor.forClass(Boolean.class);
+        Mockito.verify(view, Mockito.times(2)).setFavorite(captor.capture());
+
+        assertFalse(captor.getAllValues().get(0));
+        assertTrue(captor.getAllValues().get(1));
+
+    }
 
 }
